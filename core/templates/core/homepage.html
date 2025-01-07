@@ -1,0 +1,101 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block cssLink %}
+    <link rel="stylesheet" href="{% static "css/homepage.css" %}">
+{% endblock cssLink %}
+{% block mainContent %}
+    <header>
+        <div class="blur_bg"></div>
+        <section class="header-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 text-center">
+                        <h1 class="head_title">Welcome to the E-library.</h1>
+                        <p>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam explicabo incidunt libero repellat quasi deserunt sed perspiciatis beatae possimus dolor. Aliquam explicabo incidunt libero repellat quasi deserunt sed perspiciatis beatae possimus dolor.
+                        </p>
+                        <a href="#books" class="btn btn-dark mt-4">View books</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-12 col-md-6">
+                    <div class="active_customer rounded-3 p-2">
+                        <h2 class="fw-bold customar_title pt-3">Active customer</h2>
+                        <p class="customar_title fs-2">100+</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="active_customer rounded-3 p-2">
+                        <p class="customar_title fs-3">
+                            <q>
+                                Books are human best friend. They gives you knowledge of everything.
+                            </q>
+                        </p>
+                        <h2 class="fw-bold customar_title pt-3">
+                            <i>Mahfuza Akter</i>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="container mt-5" id="books">
+            <div>
+                <h2 class="text-center fw-bold">Available books category</h2>
+                <div class="text-center">
+                    <a href="{% url "home_page" %}"
+                       title="click for view this category books"
+                       class="btn btn-dark m-2">All</a>
+                    {% for category in categories %}
+                        <a href="{% url "filter_category" category.slug %}"
+                           title="click for view this category books"
+                           class="btn btn-dark m-2">{{ category.name|title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <section class="container mt-5">
+            <h2 class="text-center fw-bold my-2 mb-5">Available books</h2>
+            <div class="row">
+                {% for book in books %}
+                    <div class="col-12 col-md-3">
+                        <div class="card" style="width: 100%;">
+                            <img src="{{ book.image.url }}" class="card-img-top img-book" alt="...">
+                            <div class="book-high-light">Top rated</div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ book.name }}</h5>
+                                <p class="card-text">{{ book.description|truncatewords:10 }}</p>
+                                <p class="card-text">
+                                    Price: <b>{{ book.price }}Tk</b>  only
+                                </p>
+                                <p class="border p-1">
+                                    Categories:
+                                    {% for cat in book.category.all %}<small class="mx-1">{{ cat.name }},</small>{% endfor %}
+                                </p>
+                                <a href="{% url "book_details" book.slug %}" class="btn btn-dark">View details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <section class="my-5 container">
+            <div class="text-center bg-gray">
+                <h2 class="fw-bold fs-1">Facing any problem to buy books?</h2>
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6">
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur omnis consectetur quod aperiam et doloribus, repellat, ut doloremque, error commodi eveniet? Aspernatur magni voluptas libero quam temporibus repellendus soluta aut.
+                        </p>
+                    </div>
+                </div>
+                <button class="btn btn-dark">Talk with us</button>
+                <p>Email:mstmahfuzaker581@gmail.com</p>
+            </div>
+        </section>
+    </main>
+{% endblock mainContent %}

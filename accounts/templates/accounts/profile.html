@@ -1,0 +1,53 @@
+{% extends "core/base.html" %}
+{% block mainContent %}
+    <section class="container my-3">
+        <div>
+            <h1 class="fw-bold text-center">Welcome {{ user.username |title }}</h1>
+            <p class="text-18 text-center">
+                Total borrowed : <span class="fw-bold">{{ borrowed_books|length }} book</span>
+            </p>
+            <div class="text-center">
+                <a href="{% url "update_info" %}" class="btn btn-warning me-3">Change your information</a>
+                <a href="{% url "update_password" %}" class ="btn btn-warning me-3">Change your password</a>
+            </div>
+        </div>
+        <div class="my-5">
+            <h4 class="text-center">All Borrowed books</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Book name</th>
+                        <th scope="col">Borrowed Date</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in borrowed_books %}
+                        <tr>
+                            <th scope="row">{{ book.book.id }}</th>
+                            <td>
+                                <a href="{% url "book_details" book.book.slug %}">{{ book.book.name }}</a>
+                            </td>
+                            <td>{{ book.timestamp }}</td>
+                            <td>{{ book.book.price }}TK</td>
+                            <td class="{% if book.status == 'borrowed' %} text-danger {% else %} text-info {% endif %}">{{ book.status }}</td>
+                            <td>
+                                {% if book.status == 'borrowed' %}
+                                    <form action="{% url "return_book" book.book.slug %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary">Return</button>
+                                    </form>
+                                {% else %}
+                                    <button class="btn btn-primary" disabled>book returned</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock mainContent %}

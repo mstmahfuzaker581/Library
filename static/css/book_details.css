@@ -1,0 +1,33 @@
+.detail_body {
+    width: 100%;
+    min-height: 100vh;
+    background: #f1f2f4;
+  }
+  
+  .outer-box {
+    background: #fff;
+    margin-top: 50px;
+    padding: 30px;
+  }
+  
+  .text-18 {
+    font-size: 18px;
+  }
+  
+  .related_book_img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .review_form_box {
+    background: #f6f6f6;
+    margin: 30px 0;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .review_box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+  }

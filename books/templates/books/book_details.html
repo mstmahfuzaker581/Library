@@ -1,0 +1,133 @@
+{% extends "core/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block cssLink %}
+    <link rel="stylesheet" href="{% static "css/book_details.css" %}">
+{% endblock cssLink %}
+{% block mainContent %}
+    <section class="detail_body">
+        <div class="container">
+            <div>Book>detail>{{ book.slug }}</div>
+            <div class="outer-box">
+                <div class="row justify-content-center g-2">
+                    <div class="col-12 col-md-8">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <img src="{{ book.image.url }}" class="img-fluid" alt="book image">
+                                <p class="text-center bg-secondary-subtle mt-2 fw-bold m-auto">Top Rated 📖</p>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <h2 class="fw-bold">{{ book.name }}</h2>
+                                <p class="fs-4">
+                                    By: <span class="text-info">{{ book.author }}</span>
+                                </p>
+                                <p class="text-18">
+                                    Category:
+                                    <span class="text-info">
+                                        {% for cat in book.category.all %}{{ cat.name }},{% endfor %}
+                                    </span>
+                                </p>
+                                <p class="text-18">⭐⭐⭐⭐⭐ 5 Rating | 2 Review</p>
+                                <p class="text-18">
+                                    Price: <span class="fw-bold">{{ book.price }}TK</span>(Only)
+                                </p>
+                                <div class="d-flex gap-5">
+                                    <div class="d-flex flex-column text-center">
+                                        <small>Book length</small>
+                                        <i class="fa-regular fa-paste"></i>
+                                        <small>150 pages</small>
+                                    </div>
+                                    <div class="d-flex flex-column text-center">
+                                        <small>Edition</small>
+                                        <i class="fa-solid fa-layer-group"></i>
+                                        <small>1st Edition</small>
+                                    </div>
+                                    <div class="d-flex flex-column text-center">
+                                        <small>Publication</small>
+                                        <i class="fa-brands fa-square-web-awesome"></i>
+                                        <small>E-library</small>
+                                    </div>
+                                </div>
+                                {% if user.is_authenticated %}
+                                    <form action="{% url "borrow_book" book.slug %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-warning mt-3 btn-lg">Borrow</button>
+                                    </form>
+                                {% else %}
+                                    <a class="btn btn-warning mt-3 btn-lg" href="{% url "login" %}">Login to borrow</a>
+                                {% endif %}
+                                <div class="description mt-3">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button"
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseOne"
+                                                        aria-expanded="true"
+                                                        aria-controls="collapseOne">About books</button>
+                                            </h2>
+                                            <div id="collapseOne"
+                                                 class="accordion-collapse collapse show"
+                                                 data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">{{ book.description }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <p>Releted books</p>
+                        <div>
+                            <div class="row g-5">
+                                {% for bk in related_books %}
+                                    <div class="col-4">
+                                        <img src="{{ bk.image.url }}" alt="book" class="related_book_img">
+                                    </div>
+                                    <div class="col-8">
+                                        <a href="{% url "book_details" bk.slug %}">
+                                            <h5>{{ bk.name }}</h5>
+                                        </a>
+                                        <p>Price: {{ bk.price }}tk</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if canReview %}
+            <div class="container">
+                <div class="review_form_box">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-8">
+                            <h4 class="text-center">Write a review</h4>
+                            <form class="" action="" method="post">
+                                {% csrf_token %}
+                                {{ form|crispy }}
+                                <button class="btn btn-dark" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="container mt-5">
+            <div class="review_box">
+                <h3 class="text-center">Reviews {{ reviews|length }}</h3>
+                {% for review in reviews %}
+                    <div class="border p-3 my-3">
+                        <h3>User : {{ review.user.username|title }}</h3>
+                        <p>
+                            Rating : <small>⭐{{ review.rating }}</small>
+                        </p>
+                        <p>{{ review.review }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock mainContent %}

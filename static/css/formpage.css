@@ -1,0 +1,21 @@
+.reg-body {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+  }
+  .reg-bg {
+    background-image: linear-gradient(
+      to bottom,
+      #4127e7,
+      #6666f7,
+      #9199ff,
+      #c2cbff,
+      #fafbff
+    );
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    width: 100%;
+    filter: blur(40px);
+  }
